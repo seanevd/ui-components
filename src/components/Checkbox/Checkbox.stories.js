@@ -63,7 +63,7 @@ storiesOf('Atoms', module)
               sectionFn: () => (
                 <div>
                   <Checkbox name="first" label="With a associated text" />
-                  <Checkbox name="second" label="Second line of info" defaultChecked />
+                  <Checkbox name="second" label="Second line of information" defaultChecked />
                   <Checkbox name="third" label="Another line of text, disabled" disabled />
                   <Checkbox name="third" label="Another line of text, disabled and checked" disabled defaultChecked />
                 </div>
