@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 import _ from 'lodash';
 
 import { colors, typography } from '../styles';
@@ -171,5 +172,19 @@ class TextareaInput extends React.Component {
     );
   }
 }
+
+TextareaInput.defaultProps = {
+  name: 'Name',
+  label: 'Label'
+};
+
+TextareaInput.propTypes = {
+  name: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
+  helper: PropTypes.string,
+  error: PropTypes.string,
+  disabled: PropTypes.bool,
+  children: PropTypes.string
+};
 
 export default TextareaInput;
