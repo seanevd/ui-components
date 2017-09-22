@@ -1,13 +1,9 @@
 import React from 'react';
-// import moment from 'moment';
-// import styled from 'styled-components';
 import {
-  // action,
   storiesOf
 } from '@storybook/react';
 
 import TextareaInput from './TextareaInput';
-// import { fontSizes } from '../styles';
 
 storiesOf('Form', module)
   .addWithChapters(
@@ -18,7 +14,7 @@ storiesOf('Form', module)
 
         ~~~
         import React from 'react';
-        import TextareaInput from 'ui-components/TextareaInput';
+        import {TextareaInput} from 'insidesales-components';
         ~~~
       `,
       chapters: [
