@@ -11,43 +11,90 @@ const TextareaInputWrapper = styled.div`
 
 const Textarea = styled.textarea`
   background-color: ${colors.white};
-  border: thin solid ${colors.black40};
+  border: ${(props) => {
+    if (props.error) {
+      return `2px solid ${colors.red}`;
+    } else {
+      return `thin solid ${colors.black40}`;
+    }
+  }};
   border-radius: 4px;
   box-sizing: border-box;
-  padding: 28px 16px 16px;
-  color: ${colors.black90};
+  padding: ${(props) => {
+    if (props.error) {
+      return '27px 15px 15px';
+    } else {
+      return '28px 16px 16px';
+    }
+  }};
   height: 100px;
   min-height: 100px;
   min-width: 100%;
   resize: none;
   text-align: left;
+  transition: border-color 0.14s ease-in-out;
   &:hover {
-    border-width: 2px;
-    padding: 27px 15px 15px;
+    border-width: ${(props) => {
+      if (props.disabled) {
+        return '1px';
+      }
+      return '2px';
+    }};
+    padding: ${(props) => {
+      if (props.disabled) {
+        return '28px 16px 16px';
+      }
+      return '27px 15px 15px';
+    }};
   }
   &:focus {
-    border: 2px solid ${colors.green};
+    border: ${(props) => {
+      if (props.error) {
+        return `2px solid ${colors.red}`;
+      } else {
+        return `2px solid ${colors.green}`;
+      }
+    }};
     outline: 0;
     padding: 27px 15px 15px;
     + label {
-      color: ${colors.green};
+      color: ${(props) => {
+        if (props.error) {
+          return colors.red;
+        } else {
+          return colors.green;
+        }
+      }};
+    }
+  }
+  &:disabled {
+    background-color: ${colors.black05};
+    border-color: ${colors.black40};
+    + label {
+      color: ${colors.black40};
     }
   }
   ${typography.subhead1}
 `;
 
 const TextLabel = styled.label`
-  color: ${colors.black60};
+  color: ${(props) => {
+      if (props.error) {
+        return colors.red;
+      } else {
+        return colors.black60;
+      }
+    }};
   left: 16px;
   position: absolute;
-  top: ${(props) => {
+  transform: ${(props) => {
     if (props.open) {
-      return '7px';
+      return 'translateY(10px)';
     } else {
-      return '14px';
+      return 'translateY(19px)';
     }
   }};
-  transition: all 0.14s ease-in-out;
+  transition: font-size 0.14s ease-in-out, transform 0.14s ease-in-out, color 0.14s ease-in-out;
   ${(props) => {
     if (props.open) {
       return typography.caption
@@ -55,6 +102,16 @@ const TextLabel = styled.label`
       return typography.subhead1
     }
   }}
+  line-height: 16px;
+`;
+
+const TextareaHelper = styled.div`
+  color: ${colors.black40};
+  ${typography.caption}
+`;
+
+const TextareaError = styled(TextareaHelper)`
+  color: ${colors.red};
 `;
 
 class TextareaInput extends React.Component {
@@ -64,6 +121,14 @@ class TextareaInput extends React.Component {
     this.state = {
       focusedOrHasValue: false
     };
+  }
+
+  componentDidMount() {
+    if (this.props.children) {
+      this.setState({
+        focusedOrHasValue: true
+      });
+    }
   }
 
   focused = () => {
@@ -85,12 +150,23 @@ class TextareaInput extends React.Component {
     }
   }
 
+  renderHelperText() {
+    const { error, helper } = this.props;
+    if (error) {
+      return (<TextareaError>{error}</TextareaError>);
+    }
+    return (<TextareaHelper>{helper}</TextareaHelper>);
+  }
+
   render() {
-    const { label, name } = this.props;
+    const { label, name, error, disabled, children } = this.props;
     return (
       <TextareaInputWrapper>
-        <Textarea onFocus={this.focused} onBlur={this.blurred} id={name} name={name} />
-        <TextLabel open={this.state.focusedOrHasValue} htmlFor={name}>{label}</TextLabel>
+        <Textarea onFocus={this.focused} onBlur={this.blurred} id={name} name={name} error={error} disabled={disabled}>
+          {children}
+        </Textarea>
+        <TextLabel open={this.state.focusedOrHasValue} htmlFor={name} error={error}>{label}</TextLabel>
+        {this.renderHelperText()}
       </TextareaInputWrapper>
     );
   }
