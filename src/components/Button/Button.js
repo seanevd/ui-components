@@ -1,5 +1,8 @@
 import React from 'react';
 
-const Button = () => <button>Test</button>;
+const Button = props => 
+  <button type="button">
+    {props.children}
+  </button>;
 
 export default Button;
